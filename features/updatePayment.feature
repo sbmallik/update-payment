@@ -9,14 +9,17 @@ Background:
 #	Given I have no browser cookies
 	Given I am on the USCP home page
 	Then The homepage loads
-	When I click Log in in pushdown
+	When I hover on the Firefly Login icon
+		And I click Log in in pushdown
 	Then the log in page loads
 
 @s1
 Scenario Outline: Update Payment modal for expired or payment failed accounts
 	When I log in with "<email>" and "<password>"
 	Then Logins with "<payment_status>" should "<show_modal>"
-  	And I log out
+	When I hover on the Firefly Login icon
+  		And I log out
+	Then The homepage loads
 Examples:
       | payment_status       |  email                        | password    |  show_modal               |
       | expired              |  DC4834301@mailinator.com     | New1111     |  yes                      |
@@ -30,14 +33,19 @@ Scenario: Update Payment links to SAM page
 	Then Update Your Payment Information modal displays
 	When I click "update your payment information" link
 	Then Update Your Payment Information modal does not display
-	Then A new window for the SAM Change Your Payment page opens
-	When I am on the USCP home page
-	Then I log out
-	When I click Log in in pushdown
+		And A new window for the SAM Change Your Payment page opens
+	When The homepage loads
+		And I hover on the Firefly Login icon
+		And I log out
+	Then The homepage loads
+	When I hover on the Firefly Login icon
+		And I click Log in in pushdown
 	Then the log in page loads
 	When I log in with "DC4834301@mailinator.com" and "New1111"
 	Then Update Your Payment Information modal does not display
-	And I log out
+	When I hover on the Firefly Login icon
+		And I log out
+	Then The homepage loads
 
 @s3
 Scenario: Remind me Later closes modal
@@ -45,4 +53,6 @@ Scenario: Remind me Later closes modal
 	Then Update Your Payment Information modal displays
 	When I click "remind me later" link
 	Then Update Your Payment Information modal does not display
-	Then I log out
+	When I hover on the Firefly Login icon
+		And I log out
+	Then The homepage loads

@@ -12,13 +12,15 @@ Then (/^The homepage loads$/) do
 	expect(page).to have_selector(:id, 'section_home')
 end
 
+When(/^I hover on the Firefly Login icon$/) do
+	find('.site-nav-firefly-span').hover
+end
+
 When(/^I click Log in in pushdown$/) do
-	find('.site-nav-firefly-module.site-nav-item-visible').hover
-	find('.ff-login-btn.firefly-signin-btn.sam-returns').click
+	find('.ff-login-btn').click
 end
 
 Then(/^the log in page loads$/) do
-#	require 'debug'
 	expect(page).to have_selector('main.login')
 end
 
@@ -35,16 +37,14 @@ end
 
 Then(/^Logins with "(.*?)" should "(.*?)"$/) do |payment_status, show_modal|
 	if payment_status=='expired'or'lastpaymentfailed' and show_modal=='yes'
-		expect(page).to have_css('div.expired-card-modal-wrapper')
+		step %{Update Your Payment Information modal displays}
 	else
-		expect(page).not_to have_css('div.expired-card-modal-wrapper')
+		step %{Update Your Payment Information modal does not display}
 	end
 end
 
 Then(/^I log out$/) do
-	find('.site-nav-firefly-span').hover
-	find('a.ff-logout-btn.sam-returns').click
-	expect(page).to have_selector(:id, 'section_home')
+	find('.ff-logout-btn.sam-returns').click
 end
 
 #s2 and s3
@@ -75,6 +75,6 @@ Then(/^Update Your Payment Information modal does not display$/) do
 	expect(page).not_to have_css('div.expired-card-modal-wrapper')  #modal window no longer displays
 end
 
-#After('@s2') do
+#After(:each) do
 #	Capybara.reset_sessions!
 #end
